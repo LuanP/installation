@@ -153,3 +153,19 @@ class Install(object):
 
     def config_sublime():
         run('export VISUAL="sublime" >> /etc/profile')
+
+
+if __name__ == "__main__":
+    # get arguments, excluding the file
+    args = sys.argv[1:]
+
+    # verify if args passed were just name and email
+    if len(args) == 2:
+        name = args[0]
+        email = args[1]
+    elif len(args) == 4:
+        kwargs = dict(args[0]=args[1], args[2]=args[3])
+        name = kwargs.get('--name')
+        email = kwargs.get('--email')
+
+    Install(name, email)
