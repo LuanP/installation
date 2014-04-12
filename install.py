@@ -27,7 +27,7 @@ class Install(object):
         #     install_others()
 
     @classmethod
-    def run(cls, cmd)
+    def run(cls, cmd):
         process = Popen(cmd, shell=True, executable='/bin/bash')
         process.wait()
 
@@ -135,7 +135,7 @@ class Install(object):
         run('git config --global push.default simple')
         run('git config --global core.editor vi')
         run('GIT_PS1_SHOWDIRTYSTATE=true >> ~/.bashrc')
-        run('{} >> ~/.bashrc'.format(ps1)
+        run('{} >> ~/.bashrc'.format(ps1))
 
     def config_vim(self):
         # the idea is to clone the repository below and run install.sh
