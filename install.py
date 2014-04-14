@@ -13,8 +13,6 @@ class Install(object):
         self.name = name
         self.email = email
 
-    def __call__(self):
-
         # update and upgrade the system
         self.cache.update()
         self.cache.open()
@@ -51,31 +49,27 @@ class Install(object):
         python_pip = self.get_package('python-pip')
         git = self.get_package('git')
         vim = self.get_package('vim')
-        sublime = self.get_package('sublime')
-        chrome = self.get_package('google-chrome-stable')
         terminator = self.get_package('terminator')
 
         # mark each package for installation
         python_pip.mark_install()
         git.mark_install()
         vim.mark_install()
-        sublime.mark_install()
-        chrome.mark_install()
         terminator.mark_install()
 
         # install packages
         self.cache.commit()
 
         # install pip packages, firstly update pip
-        pip('pip')
-        pip('distribute')
-        pip('fabric')
+        self.pip('pip')
+        self.pip('distribute')
+        self.pip('fabric')
 
         # install deb files
         self.install_debfiles()
 
         # install firefox nightly
-        install_firefox_nightly()
+        self.install_firefox_nightly()
 
         # configure git, vim and sublime
         self.config_git()
@@ -86,10 +80,14 @@ class Install(object):
     def install_debfiles(self):
         vbox_url = 'http://download.virtualbox.org/virtualbox/4.3.10/virtualbox-4.3_4.3.10-93012~Ubuntu~raring_amd64.deb'
         vagrant_url = 'https://dl.bintray.com/mitchellh/vagrant/vagrant_1.5.2_x86_64.deb'
+	chrome_url = 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
+	sublime_url = 'http://c758482.r82.cf2.rackcdn.com/sublime-text_build-3059_amd64.deb'
 
         debfiles = {
             'vbox': vbox_url,
             'vagrant': vagrant_url,
+            'chrome': vagrant_url,
+            'sublime': sublime_url,
         }
 
         # download and install deb packages
@@ -164,7 +162,9 @@ if __name__ == "__main__":
         name = args[0]
         email = args[1]
     elif len(args) == 4:
-        kwargs = dict(args[0]=args[1], args[2]=args[3])
+        name = args[0]
+        email = args[1]
+        kwargs = dict(name=args[1], email=args[3])
         name = kwargs.get('--name')
         email = kwargs.get('--email')
 
